@@ -5,6 +5,7 @@ import com.shaobaishen.dto.ProductRequest;
 import com.shaobaishen.model.Product;
 import com.shaobaishen.rowmapper.ProductRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -22,6 +23,17 @@ public class ProductDaoImpl implements ProductDao {
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+
+    @Override
+    public List<Product> getProducts() {
+        String sql ="select product_id,product_name, category ,image_url ,price ,stock " +
+                ",description ,created_date ,last_modified_date from product";
+        Map<String,Object> map = new HashMap<>();
+        List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
+
+        return productList;
+    }
 
     @Override
     public Product getByProductId(Integer productId) {
@@ -83,4 +95,6 @@ public class ProductDaoImpl implements ProductDao {
         map.put("productId",productId);
         namedParameterJdbcTemplate.update(sql,map);
     }
+
+
 }
