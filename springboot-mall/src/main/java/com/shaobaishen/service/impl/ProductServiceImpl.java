@@ -1,6 +1,7 @@
 package com.shaobaishen.service.impl;
 
 import com.shaobaishen.dao.ProductDao;
+import com.shaobaishen.dto.ProductRequest;
 import com.shaobaishen.model.Product;
 import com.shaobaishen.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,5 +15,9 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getByProductId(Integer productId) {
           return productDao.getByProductId(productId);
+    }
+    @Override
+    public Integer createProduct(ProductRequest productRequest) {
+        return productDao.createProduct(productRequest);
     }
 }
