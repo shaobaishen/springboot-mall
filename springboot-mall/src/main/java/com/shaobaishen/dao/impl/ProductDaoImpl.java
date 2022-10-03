@@ -26,28 +26,47 @@ public class ProductDaoImpl implements ProductDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+    @Override
+    public Integer countProduct(ProductQueryParams productQueryParams) {
+
+        // 取得 product 總數
+        String sql = "select count(*) from product where 1=1";
+
+        // 查詢條件
+        Map<String, Object> map = new HashMap<>();
+        if (productQueryParams.getCategory() != null) {
+            sql = sql + " AND category =:category";
+            map.put("category", productQueryParams.getCategory().name());
+        }
+        if (productQueryParams.getSearch() != null) {
+            sql = sql + " AND product_name LIKE :search";
+            map.put("search", "%" + productQueryParams.getSearch() + "%");
+        }
+        Integer total = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+        return total;
+    }
 
     @Override
     public List<Product> getProducts(ProductQueryParams productQueryParams) {
-        String sql ="select product_id,product_name, category ,image_url ,price ,stock " +
+        String sql = "select product_id,product_name, category ,image_url ,price ,stock " +
                 ",description ,created_date ,last_modified_date " +
                 "from product where 1=1";
         // 查詢條件
-        Map<String,Object> map = new HashMap<>();
-        if( productQueryParams.getCategory() != null){
+        Map<String, Object> map = new HashMap<>();
+        if (productQueryParams.getCategory() != null) {
             sql = sql + " AND category =:category";
-            map.put("category" ,productQueryParams.getCategory().name());
+            map.put("category", productQueryParams.getCategory().name());
         }
-        if( productQueryParams.getSearch() != null){
+        if (productQueryParams.getSearch() != null) {
             sql = sql + " AND product_name LIKE :search";
-            map.put("search" ,"%"+productQueryParams.getSearch()+"%");
+            map.put("search", "%" + productQueryParams.getSearch() + "%");
         }
         // 排序
         sql = sql + " ORDER BY " + productQueryParams.getOrderBY() + " " + productQueryParams.getSort();
         // 分頁
         sql = sql + " LIMIT :limit OFFSET :offset";
-        map.put("limit" ,productQueryParams.getLimit());
-        map.put("offset" ,productQueryParams.getOffset());
+        map.put("limit", productQueryParams.getLimit());
+        map.put("offset", productQueryParams.getOffset());
 
         List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
 
@@ -72,7 +91,7 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public Integer createProduct(ProductRequest productRequest) {
         String sql = "insert product(product_name,   category  ,image_url  ,price  ,stock  ,description  ,created_date  ,last_modified_date)" +
-                           "  values(:product_name, :category ,:image_url ,:price ,:stock ,:description ,:created_date ,:last_modified_date)";
+                "  values(:product_name, :category ,:image_url ,:price ,:stock ,:description ,:created_date ,:last_modified_date)";
         Map<String, Object> map = new HashMap<>();
         map.put("product_name", productRequest.getProduct_name());
         map.put("category", productRequest.getCategory().toString());  //Enum需成String類型
@@ -91,28 +110,29 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public void updateProduct(Integer productId, ProductRequest productRequest) {
-        String sql ="update product set product_name=:product_name," +
+        String sql = "update product set product_name=:product_name," +
                 " category=:category ,image_url=:image_url ,price=:price ,stock=:stock ," +
                 "description=:description ,last_modified_date=:last_modified_date " +
                 " where product_id=:productId";
-        Map<String,Object> map = new HashMap<>();
-        map.put("productId",productId);
-        map.put("product_name",productRequest.getProduct_name());
-        map.put("category",productRequest.getCategory().toString());
-        map.put("image_url",productRequest.getImage_url());
-        map.put("price",productRequest.getPrice());
-        map.put("stock",productRequest.getStock());
-        map.put("description",productRequest.getDescription());
-        map.put("last_modified_date",new Date());
+        Map<String, Object> map = new HashMap<>();
+        map.put("productId", productId);
+        map.put("product_name", productRequest.getProduct_name());
+        map.put("category", productRequest.getCategory().toString());
+        map.put("image_url", productRequest.getImage_url());
+        map.put("price", productRequest.getPrice());
+        map.put("stock", productRequest.getStock());
+        map.put("description", productRequest.getDescription());
+        map.put("last_modified_date", new Date());
 
-        namedParameterJdbcTemplate.update(sql,map);
+        namedParameterJdbcTemplate.update(sql, map);
     }
+
     @Override
     public void deleteProduct(Integer productId) {
         String sql = "delete from product where product_id=:productId";
-        Map<String,Object> map = new HashMap<>();
-        map.put("productId",productId);
-        namedParameterJdbcTemplate.update(sql,map);
+        Map<String, Object> map = new HashMap<>();
+        map.put("productId", productId);
+        namedParameterJdbcTemplate.update(sql, map);
     }
 
 
