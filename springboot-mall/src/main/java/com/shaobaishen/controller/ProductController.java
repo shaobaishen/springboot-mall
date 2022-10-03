@@ -10,13 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+@Validated
 @RestController
 public class ProductController {
     @Autowired
@@ -26,7 +29,9 @@ public class ProductController {
     public ResponseEntity<List<Product>> getProducts(@RequestParam(required = false) ProductCategory category,
                                                      @RequestParam(required = false) String search,
                                                      @RequestParam(defaultValue = "created_date") String orderBy,
-                                                     @RequestParam(defaultValue = "desc") String sort){
+                                                     @RequestParam(defaultValue = "desc") String sort,
+                                                     @RequestParam(defaultValue = "5") @Max(1000)@Min(0) Integer limit,
+                                                     @RequestParam(defaultValue = "0") @Min(0) Integer offset){
         //將查詢條件變數放入productQueryParams傳遞
         // 查詢條件 Filtering
         ProductQueryParams productQueryParams = new ProductQueryParams();
@@ -35,6 +40,10 @@ public class ProductController {
         // 排序 Sorting
         productQueryParams.setOrderBY(orderBy);
         productQueryParams.setSort(sort);
+        // 分頁 Pagination
+        productQueryParams.setLimit(limit);
+        productQueryParams.setOffset(offset);
+
 
        List<Product>  productList = productService.getProducts(productQueryParams);
 
