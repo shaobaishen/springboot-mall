@@ -1,6 +1,7 @@
 package com.shaobaishen.controller;
 
 import com.shaobaishen.constant.ProductCategory;
+import com.shaobaishen.dto.ProductQueryParams;
 import com.shaobaishen.dto.ProductRequest;
 import com.shaobaishen.model.Product;
 import com.shaobaishen.rowmapper.ProductRowMapper;
@@ -24,7 +25,12 @@ public class ProductController {
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getProducts(@RequestParam(required = false) ProductCategory category,
                                                      @RequestParam(required = false) String search){
-       List<Product>  productList = productService.getProducts(category ,search);
+        //將查詢條件變數放入productQueryParams傳遞
+        ProductQueryParams productQueryParams = new ProductQueryParams();
+        productQueryParams.setCategory(category);
+        productQueryParams.setSearch(search);
+
+       List<Product>  productList = productService.getProducts(productQueryParams);
 
        return ResponseEntity.status(HttpStatus.OK).body(productList);
     }

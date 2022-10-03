@@ -2,6 +2,7 @@ package com.shaobaishen.service.impl;
 
 import com.shaobaishen.constant.ProductCategory;
 import com.shaobaishen.dao.ProductDao;
+import com.shaobaishen.dto.ProductQueryParams;
 import com.shaobaishen.dto.ProductRequest;
 import com.shaobaishen.model.Product;
 import com.shaobaishen.service.ProductService;
@@ -34,7 +35,7 @@ public class ProductServiceImpl implements ProductService {
         productDao.deleteProduct(productId);
     }
     @Override
-    public List<Product> getProducts(ProductCategory category ,String search) {
-        return productDao.getProducts(category ,search);
+    public List<Product> getProducts(ProductQueryParams productQueryParams) {
+        return productDao.getProducts(productQueryParams);
     }
 }
