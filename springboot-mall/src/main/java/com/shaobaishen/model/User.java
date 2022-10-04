@@ -2,6 +2,7 @@ package com.shaobaishen.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 public class User {
@@ -11,8 +12,8 @@ public class User {
 
     @JsonIgnore
     private String password;
-    private Date createdDate;
-    private Date lastModifiedDate;
+    private Timestamp createdDate;
+    private Timestamp lastModifiedDate;
 
     public Integer getUserId() {
         return userId;
@@ -42,7 +43,7 @@ public class User {
         return createdDate;
     }
 
-    public void setCreatedDate(Date createdDate) {
+    public void setCreatedDate(Timestamp createdDate) {
         this.createdDate = createdDate;
     }
 
@@ -50,7 +51,7 @@ public class User {
         return lastModifiedDate;
     }
 
-    public void setLastModifiedDate(Date lastModifiedDate) {
+    public void setLastModifiedDate(Timestamp lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
     }
 }
