@@ -3,7 +3,6 @@ package com.shaobaishen.dto;
 import com.shaobaishen.constant.ProductCategory;
 
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 public class ProductRequest {
     @NotNull
