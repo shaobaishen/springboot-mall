@@ -1,5 +1,6 @@
 package com.shaobaishen.controller;
 
+import com.shaobaishen.dto.UserLoginRequest;
 import com.shaobaishen.dto.UserRegisterRequest;
 import com.shaobaishen.model.User;
 import com.shaobaishen.service.UserService;
@@ -20,10 +21,17 @@ public class UserController {
 
     @PostMapping("/users/register")
     public ResponseEntity<User> register(@RequestBody @Valid UserRegisterRequest userRegisterRequest) {
-      Integer userId = userService.register(userRegisterRequest);
+        Integer userId = userService.register(userRegisterRequest);
 
-      User user = userService.getUserById(userId);
+        User user = userService.getUserById(userId);
 
-      return ResponseEntity.status(HttpStatus.CREATED).body(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    }
+
+    @PostMapping("/users/login")
+    public ResponseEntity<User> login(@RequestBody @Valid UserLoginRequest userLoginRequest) {
+        User user = userService.login(userLoginRequest);
+
+        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 }

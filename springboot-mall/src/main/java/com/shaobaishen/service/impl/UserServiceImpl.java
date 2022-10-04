@@ -1,6 +1,7 @@
 package com.shaobaishen.service.impl;
 
 import com.shaobaishen.dao.UserDao;
+import com.shaobaishen.dto.UserLoginRequest;
 import com.shaobaishen.dto.UserRegisterRequest;
 import com.shaobaishen.model.User;
 import com.shaobaishen.service.UserService;
@@ -39,4 +40,20 @@ public class UserServiceImpl implements UserService {
         return userDao.createUser(userRegisterRequest);
     }
 
+    @Override
+    public User login(UserLoginRequest userLoginRequest) {
+        User user = userDao.getUserByEmail(userLoginRequest.getEmail());
+        if (user == null) {
+            log.warn("這個帳號 {} 尚未註冊", userLoginRequest.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        if (userLoginRequest.getPassword().equals(user.getPassword())) {
+            log.info("帳號 {} 登入成功", userLoginRequest.getEmail());
+            throw new ResponseStatusException(HttpStatus.OK);
+        } else {
+            log.warn("帳號 {} 密碼錯誤", userLoginRequest.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+    }
 }
