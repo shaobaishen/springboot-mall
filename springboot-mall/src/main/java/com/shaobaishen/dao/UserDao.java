@@ -1,0 +1,11 @@
+package com.shaobaishen.dao;
+
+import com.shaobaishen.dto.UserRegisterRequest;
+import com.shaobaishen.model.User;
+
+public interface UserDao {
+
+    Integer createUser(UserRegisterRequest userRegisterRequest);
+
+    User getUserById(Integer userId);
+}
