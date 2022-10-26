@@ -8,6 +8,11 @@ public class OrderItem {
     private Integer quantity;
     private Integer amount;
 
+    private String product_name;
+    private String imageUrl;
+
+
+
     public Integer getOrderItem() {
         return orderItem;
     }
@@ -46,5 +51,21 @@ public class OrderItem {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    public String getProduct_name() {
+        return product_name;
+    }
+
+    public void setProduct_name(String product_name) {
+        this.product_name = product_name;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
     }
 }

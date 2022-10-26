@@ -4,6 +4,7 @@ import com.shaobaishen.dao.OrderDao;
 import com.shaobaishen.dao.ProductDao;
 import com.shaobaishen.dto.BuyItem;
 import com.shaobaishen.dto.CreateOrderRequest;
+import com.shaobaishen.model.Order;
 import com.shaobaishen.model.OrderItem;
 import com.shaobaishen.model.Product;
 import com.shaobaishen.service.OrderService;
@@ -38,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
            OrderItem orderItem = new OrderItem();
            orderItem.setProductId(buyItem.getProductId());
            orderItem.setQuantity(buyItem.getQuantity());
-           orderItem.setAmount(totalAmount);
+           orderItem.setAmount(amount);
 
            orderItemList.add(orderItem);
        }
@@ -50,5 +51,16 @@ public class OrderServiceImpl implements OrderService {
         orderDao.createOrderItems(orderId, orderItemList);
 
         return orderId;
+    }
+    @Transactional
+    @Override
+    public Order getOrderById(Integer orderId) {
+        Order order = orderDao.getOrderById(orderId);
+
+        List<OrderItem> orderItemList = orderDao.getOrderItemById(orderId);
+
+        order.setOrderItemList(orderItemList);
+
+        return order;
     }
 }
